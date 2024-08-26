@@ -1,11 +1,16 @@
-import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Navigate, Outlet, RouterProvider } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Outlet />,
+    element: <ProtectedRoute><Outlet /></ProtectedRoute>,
     children: [
+      {
+        path: "",
+        element: <Navigate to={"dashboard"} />,
+      },
       {
         path: "dashboard",
         element: (
@@ -29,7 +34,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <LoginPage/>,
+    element: <LoginPage />,
   }
 ]);
 
