@@ -8,6 +8,8 @@ export const AuthContext = createContext(null)
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null)
 
+    const [isLoading, setIsLoading] = useState(true)
+
     const loadUser = () => {
         const accessToken = localStorage.getItem('access_token')
         if (accessToken) {
@@ -26,6 +28,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     useEffect(() => {
+        setIsLoading(false)
         loadUser()
     }, [])
 
@@ -37,7 +40,12 @@ export const AuthProvider = ({ children }) => {
 
     const isAuthenticated = () => !!user
 
+    if (isLoading) {
+        return <div>Loading</div>
+    }
+
     const login = async (username, password) => {
+        setIsLoading(true)
         const { access_token, refresh_token } = await AuthAPI.login(username, password)
         localStorage.setItem('access_token', access_token)
         localStorage.setItem('refresh_token', refresh_token)

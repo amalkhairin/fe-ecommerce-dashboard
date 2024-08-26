@@ -1,6 +1,21 @@
 import { createBrowserRouter, Navigate, Outlet, RouterProvider } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { useAuth } from "./hooks";
+
+const DashboadPage = () => {
+  const { user } = useAuth();
+
+  return <div>
+    <h1>Dashboard</h1>
+    <h2>{user.name}</h2>
+    <h2>{user.username}</h2>
+    <h2>{user.profilePictureUrl}</h2>
+    <h2>{user.role}</h2>
+    <h2>{user.email}</h2>
+    <Outlet />
+  </div>
+}
 
 const router = createBrowserRouter([
   {
@@ -13,12 +28,7 @@ const router = createBrowserRouter([
       },
       {
         path: "dashboard",
-        element: (
-          <div>
-            <h1>Dashboard</h1>
-            <Outlet />
-          </div>
-        ),
+        element: <DashboadPage />,
         children: [
           {
             path: "",
