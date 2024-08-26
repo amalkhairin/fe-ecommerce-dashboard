@@ -4,6 +4,8 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import reactLogo from '../assets/react.svg';
 import PageTitle from '../components/PageTitle';
+import { useAuth } from '../hooks';
+import { useNavigate } from 'react-router-dom';
 
 const schema = z.object({
     username: z.string().min(1, { message: 'Username is required' }),
@@ -12,12 +14,16 @@ const schema = z.object({
 
 
 function LoginPage() {
+    const { login } = useAuth()
+    const navigate = useNavigate()
+
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: zodResolver(schema),
     });
 
     const onSubmit = (data) => {
-        console.log(data);
+        login(data.username, data.password)
+        navigate('/dashboard')
     }
 
 
