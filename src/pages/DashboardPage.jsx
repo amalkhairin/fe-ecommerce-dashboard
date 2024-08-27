@@ -6,12 +6,12 @@ import {
   ShoppingBagIcon,
   UsersIcon,
 } from "@heroicons/react/24/outline";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks";
 
 
 const navigationList = [
-  { name: "Home", href: "/dasboard", icon: HomeIcon },
+  { name: "Home", href: "/dashboard", icon: HomeIcon },
   {
     name: "Users",
     href: "/dashboard/users",
@@ -73,8 +73,8 @@ function DashboardPage() {
             <div className="flex-1 px-2 py-4 space-y-1">
               {navigationList.map((item) => {
                 const IconComponent = item.icon;
-                return <NavLink key={item.name} to={item.href} className={({ isActive }) => (isActive ? "bg-primary-dark text-text-white" : "text-text-gray hover:bg-primary-light hover:text-text-white" + "group flex items-center px-2 py-2 text-sm font-medium rounded-md")}>
-                  <IconComponent className="mr-3 h-6 w-6 flex-shrink-0" />
+                return <NavLink key={item.name} to={item.href} end className={({ isActive }) => (isActive ? "bg-primary-dark text-text-white" : "text-text-gray hover:bg-primary-light hover:text-text-white") + "group flex items-center px-2 py-2 text-sm font-medium rounded-md"}>
+                  <IconComponent className="mr-3 h-6 w-6 flex flex-shrink-0" />
                   <span className="hidden md:inline">{item.name}</span>
                 </NavLink>
               })}
@@ -96,8 +96,18 @@ function DashboardPage() {
       <main className="flex-1 relative z-0 overflow-y-auto py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
           <h1 className="text-2xl font-semibold text-gray-900">
-            {navigationList.find((item) => item.href === location.pathname)?.name || "Not found"}
+            {navigationList.find((item) => {
+              console.log(item.href);
+              
+              return item.href === location.pathname
+            })?.name || "Not found"}
           </h1>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+          <div className="py-4">
+            <Outlet />
+          </div>
         </div>
       </main>
     </div>
