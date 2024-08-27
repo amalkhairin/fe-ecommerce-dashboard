@@ -104,7 +104,7 @@ function DashboardPage() {
               console.log(item.href);
               
               return item.href === location.pathname
-            })?.name || "Not found"}
+            })?.name || "Not found!"}
           </h1>
         </div>
 
