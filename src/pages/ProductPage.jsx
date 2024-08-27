@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import ProductsApi from '../api/ProductsApi';
-import { Button, Card, CardBody, CardHeader } from '@nextui-org/react';
+import { Button, Card, CardBody, CardHeader, Pagination } from '@nextui-org/react';
 import { PencilIcon } from '@heroicons/react/24/solid';
 import { TrashIcon } from '@heroicons/react/24/solid';
 
@@ -32,6 +32,15 @@ function ProductPage() {
             <div className='animate-spin rounded-full h-32 w-32 border border-b-2 border-primary'></div>
         </div>
     }
+
+    const formatPrice = (price) => {
+        return new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+        }).format(price);
+    }
+
+    const totalPages = Math.ceil(total / 10);
 
     if (error) {
         return <div className='text-red-600 text-center'>{error}</div>
@@ -72,7 +81,7 @@ function ProductPage() {
                                                 {productItem.name}
                                             </td>
                                             <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                                                {productItem.price}
+                                                {formatPrice(productItem.price)}
                                             </td>
                                             <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
                                                 {productItem.stock}
@@ -98,24 +107,18 @@ function ProductPage() {
                     </div>
                 </div>
             </div>
+            <div className='mt-4 flex items-center justify-between'>
+                <div>
+                    <p className='text-md text-text-gray'>
+                        Showing{" "}
+                        <span className='font-medium'>{(page - 1) * 10 + 1}{" "}to</span>
+                        <span className='font-medium'>{Math.min(page * 10, total)}</span>{" "} of
+                        <span className='font-medium'>{total}</span> results
+                    </p>
+                </div>
+                <Pagination total={totalPages} color='primary' page={page} onChange={setPage} showControls showShadow size='md'/>
+            </div>
         </div>
-        // <div>
-        //     <div className='grid grid-cols-3'>
-        //         {items.map((item) => (
-        //             <Card key={item.id} className='py-4 shadow-lg m-4'>
-        //                 <CardBody className='px-4 flex-col items-start'>
-        //                     <h4 className='text-lg font-bold'>{item.name}</h4>
-        //                     <p className='text-tiny text-text-gray'>Stock: {item.stock}</p>
-        //                     <p className='text-sm'>{item.description}</p>
-        //                     <p className='text-sm font-bold'>${item.price}</p>
-        //                 </CardBody>
-        //             </Card>
-        //         ))}
-        //     </div>
-        //     <div className='flex flex-row'>
-        //         <Button onPress={() => setPage(page - 1)} color="primary" className='m-4' disabled={page === 1}>Prev</Button><Button onPress={() => setPage(page + 1)} color="primary" className='m-4' disabled={page === 3}>Next</Button>
-        //     </div>
-        // </div>
     )
 }
 
