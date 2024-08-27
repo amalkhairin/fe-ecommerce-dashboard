@@ -1,42 +1,57 @@
-import { createBrowserRouter, Navigate, Outlet, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Navigate,
+  Outlet,
+  RouterProvider,
+} from "react-router-dom";
+
 import LoginPage from "./pages/LoginPage";
 import ProtectedRoute from "./components/ProtectedRoute";
-import { useAuth } from "./hooks";
+import SimpleDashboardPage from "./pages/SimpleDashboardPage";
+import DashboardPage from "./pages/DashboardPage";
 
-const DashboadPage = () => {
-  const { user } = useAuth();
-
-  return <div>
-    <h1>Dashboard</h1>
-    <h2>{user.name}</h2>
-    <h2>{user.username}</h2>
-    <h2>{user.profilePictureUrl}</h2>
-    <h2>{user.role}</h2>
-    <h2>{user.email}</h2>
-    <Outlet />
-  </div>
-}
+const HomePage = () => <h1>Home Page</h1>;
+const UsersPage = () => <h1>Users Page</h1>;
+const ProductsPage = () => <h1>Products Page</h1>;
+const TransactionsPage = () => <h1>Transactions Page</h1>;
+const CounterPage = () => <h1>Counter Page</h1>;
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <ProtectedRoute><Outlet /></ProtectedRoute>,
+    element: (
+      <ProtectedRoute>
+        <Outlet />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: "",
         element: <Navigate to={"dashboard"} />,
       },
       {
-        path: "dashboard",
-        element: <DashboadPage />,
+        path: "/dashboard",
+        element: <DashboardPage />,
         children: [
           {
             path: "",
-            element: <h1>Welcome to Dashboard Home</h1>,
+            element: <HomePage />,
           },
           {
             path: "users",
-            element: <h1>User List</h1>,
+            element: <UsersPage />,
+          },
+          {
+            path: "products",
+            element: <ProductsPage />,
+          },
+          {
+            path: "transactions",
+            element: <TransactionsPage />,
+          },
+          {
+            path: "counter",
+            element: <CounterPage />,
           },
         ],
       },
@@ -45,7 +60,7 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <LoginPage />,
-  }
+  },
 ]);
 
 function App() {

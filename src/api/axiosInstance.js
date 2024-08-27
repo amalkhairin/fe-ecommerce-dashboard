@@ -1,14 +1,15 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-    baseURL: "http://localhost:3000/api/v1",
-    timeout: 5000,
+  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api/v2",
+  timeout: 5000,
 });
 
-
+// if backend not yet ready
 // const axiosInstance = {
 //   post: (url, body) => {
 //     console.log({ url, body });
+
 //     return {
 //       data: {
 //         accessToken:
@@ -20,4 +21,4 @@ const axiosInstance = axios.create({
 //   },
 // };
 
-export default axiosInstance
+export default axiosInstance;

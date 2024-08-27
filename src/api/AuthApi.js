@@ -1,18 +1,18 @@
-import axiosInstance from "./axiosInstance"
+import axiosInstance from "./axiosInstance";
 
-class AuthAPI {
+class AuthApi {
+  static async login(username, password) {
+    try {
+      const response = await axiosInstance.post("auth/signin", {
+        username,
+        password,
+      });
 
-    static login = async (username, password) => {
-        try {
-            const response = await axiosInstance.post('/auth/signin', {
-                username,
-                password
-            })
-            return response.data
-        } catch (error) {
-            console.log(error)
-        }
+      return response.data;
+    } catch (error) {
+      console.error(error);
     }
+  }
 }
 
-export default AuthAPI
+export default AuthApi;

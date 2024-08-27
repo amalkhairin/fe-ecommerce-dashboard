@@ -1,16 +1,15 @@
-import { useAuth } from '../hooks/useAuth'
-import { Navigate } from 'react-router-dom'
-import PropTypes from 'prop-types'
+import PropTypes from "prop-types";
+import { useAuth } from "../hooks/useAuth";
+import { Navigate } from "react-router-dom";
 
-function ProtectedRoute({children}) {
+function ProtectedRoute({ children }) {
+  const { isAuthenticated } = useAuth();
 
-    const {isAuthenticated} = useAuth()
-
-    return isAuthenticated ? children : <Navigate to="/login" replace></Navigate>
+  return isAuthenticated ? children : <Navigate to="/login" replace />;
 }
 
 ProtectedRoute.propTypes = {
-    children: PropTypes.element.isRequired
-}
+  children: PropTypes.element.isRequired,
+};
 
-export default ProtectedRoute
+export default ProtectedRoute;
