@@ -6,11 +6,11 @@ import {
   ShoppingBagIcon,
   UsersIcon,
 } from "@heroicons/react/24/outline";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks";
 
 
-const navigation = [
+const navigationList = [
   { name: "Home", href: "/dasboard", icon: HomeIcon },
   {
     name: "Users",
@@ -36,6 +36,7 @@ const navigation = [
 
 function DashboardPage() {
   const { logout, user } = useAuth();
+  const location = useLocation();
   const navigate = useNavigate();
   const logoutHandler = () => {
     logout();
@@ -70,7 +71,7 @@ function DashboardPage() {
 
           <nav className=" flex-1 flex flex-col overflow-y-auto">
             <div className="flex-1 px-2 py-4 space-y-1">
-              {navigation.map((item) => {
+              {navigationList.map((item) => {
                 const IconComponent = item.icon;
                 return <NavLink key={item.name} to={item.href} className={({ isActive }) => (isActive ? "bg-primary-dark text-text-white" : "text-text-gray hover:bg-primary-light hover:text-text-white" + "group flex items-center px-2 py-2 text-sm font-medium rounded-md")}>
                   <IconComponent className="mr-3 h-6 w-6 flex-shrink-0" />
@@ -94,7 +95,9 @@ function DashboardPage() {
     <div className="flex-1 flex flex-col overflow-auto focus:outline-none">
       <main className="flex-1 relative z-0 overflow-y-auto py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-          <h1 className="text-2xl font-semibold text-gray-900"></h1>
+          <h1 className="text-2xl font-semibold text-gray-900">
+            {navigationList.find((item) => item.href === location.pathname)?.name || "Not found"}
+          </h1>
         </div>
       </main>
     </div>
