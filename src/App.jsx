@@ -9,10 +9,10 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import DashboardPage from "./pages/DashboardPage";
 import LoginPage from "./pages/LoginPage";
 import { CounterPage } from "./pages/CounterPage";
+import ProductPage from "./pages/ProductPage";
 
 const HomePage = () => <h1>Home Page</h1>;
 const UsersPage = () => <h1>Users Page</h1>;
-const ProductsPage = () => <h1>Products Page</h1>;
 const TransactionsPage = () => <h1>Transactions Page</h1>;
 
 const router = createBrowserRouter([
@@ -42,7 +42,7 @@ const router = createBrowserRouter([
           },
           {
             path: "products",
-            element: <ProductsPage />,
+            element: <ProductPage />,
           },
           {
             path: "transactions",
