@@ -27,7 +27,7 @@ function ProductPage() {
 
     if (isLoading) {
         return <div className='flex justify-center items-center h-full'>
-            <div className='animate-spin rounded full h-32 w-32 border border-b-2 border-primary'></div>
+            <div className='animate-spin rounded-full h-32 w-32 border border-b-2 border-primary'></div>
         </div>
     }
 
@@ -42,7 +42,7 @@ function ProductPage() {
                     <h1 className='text-xl font-semibold text-gray-900'>List of all products</h1>
                 </div>
                 <div className='mt-4 sm:ml-16 sm:mt-0 sm:flex-none'>
-                    <button className='block rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-dark sm:ml-3 sm:w-auto'>Add product</button>
+                    <button className='flex items-center justify-center rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-light sm:ml-3 sm:w-auto focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition duration-150 ease-in-out'>Add product</button>
                 </div>
             </div>
         </div>
