@@ -8,7 +8,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks";
-import { className } from "../utils/styles.util";
+import { classNames } from "../utils/styles.util";
 
 
 const navigationList = [
@@ -76,7 +76,7 @@ function DashboardPage() {
                 const IconComponent = item.icon;
                 return <NavLink key={item.name} to={item.href} end className={({ isActive }) => {
                   const dynamicClassName = isActive ? "bg-primary-dark text-text-white" : "text-text-gray hover:bg-primary-light hover:text-text-white";
-                    return className("group flex items-center px-2 py-2 text-sm font-medium rounded-md", dynamicClassName);
+                    return classNames("group flex items-center px-2 py-2 text-sm font-medium rounded-md", dynamicClassName);
                   }}>
                   <IconComponent className="mr-3 h-6 w-6 flex flex-shrink-0" />
                   <span className="hidden md:inline">{item.name}</span>
