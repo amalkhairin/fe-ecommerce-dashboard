@@ -89,6 +89,12 @@ function DashboardPage() {
 
         </div>
       </div>
+
+    {/* main content */}
+    <div className="flex-1 flex flex-col overflow-auto focus:outline-none">
+      <main className="flex-1 relative z-0 overflow-y-auto py-6"></main>
+    </div>
+
     </div>
   );
 }
