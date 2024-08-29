@@ -4,7 +4,7 @@ import { Button, Card, CardBody, CardHeader, Slider } from '@nextui-org/react';
 import { MinusIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 
-export function CounterPage() {
+export default function CounterPage() {
     const [incementAmount, setIncrementAmount] = useState(0)
     const count = useSelector((state) => state.counter.value)
     const dispatch = useDispatch()

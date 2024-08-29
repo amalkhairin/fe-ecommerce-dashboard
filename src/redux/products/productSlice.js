@@ -1,7 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
 
-export const productSlice = createSlice({
-  name: 'products',
+export const productsSlice = createSlice({
+  name: "products",
   initialState: {
     items: [],
     total: 0,
@@ -9,22 +9,33 @@ export const productSlice = createSlice({
     error: null,
   },
   reducers: {
-    setProducts: (state, action) => {
-      state.items = action.payload.items;
-      state.total = action.payload.total;
+    setProducts(state, action) {
+      const { items, total } = action.payload;
+      state.items = items;
+      state.total = total;
     },
-    setLoading: (state, action) => {
-      state.isLoading = action.payload
+    addProduct(state, action) {
+      state.items = [...state.items, action.payload];
+      state.total += 1;
     },
-    setError: (state, action) => {
-      state.error = action.payload
-    }
+    editProduct(state, action) {
+      state.items = state.items.map((item) => {
+        if (item.id === action.payload.id) {
+          return action.payload;
+        }
+        return item;
+      });
+    },
+    setIsLoading(state, action) {
+      state.isLoading = action.payload;
+    },
+    setError(state, action) {
+      state.error = action.payload;
+    },
   },
-})
+});
 
-// Action creators are generated for each case reducer function
-export const { setProducts, setLoading, setError } = productSlice.actions
-const  { reducer: productsReducer } = productSlice
+export const { setError, setIsLoading, setProducts, addProduct, editProduct } =
+  productsSlice.actions;
 
-// export default counterSlice.reducer
-export default productsReducer
+export default productsSlice.reducer;

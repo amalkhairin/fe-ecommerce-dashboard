@@ -8,8 +8,9 @@ import {
 import ProtectedRoute from "./components/ProtectedRoute";
 import DashboardPage from "./pages/DashboardPage";
 import LoginPage from "./pages/LoginPage";
-import { CounterPage } from "./pages/CounterPage";
-import ProductPage from "./pages/ProductPage";
+import CounterPage from "./pages/CounterPage";
+import ProductsPage from "./pages/ProductPage";
+import ProductDetailPage from "./pages/ProductDetailPage";
 
 const HomePage = () => <h1>Home Page</h1>;
 const UsersPage = () => <h1>Users Page</h1>;
@@ -25,7 +26,7 @@ const router = createBrowserRouter([
     ),
     children: [
       {
-        path: "",
+        index: true,
         element: <Navigate to={"dashboard"} />,
       },
       {
@@ -33,7 +34,7 @@ const router = createBrowserRouter([
         element: <DashboardPage />,
         children: [
           {
-            path: "",
+            index: true,
             element: <HomePage />,
           },
           {
@@ -42,7 +43,15 @@ const router = createBrowserRouter([
           },
           {
             path: "products",
-            element: <ProductPage />,
+            element: <ProductsPage />,
+          },
+          {
+            path: "products/new",
+            element: <ProductDetailPage />,
+          },
+          {
+            path: "products/:id",
+            element: <ProductDetailPage />,
           },
           {
             path: "transactions",

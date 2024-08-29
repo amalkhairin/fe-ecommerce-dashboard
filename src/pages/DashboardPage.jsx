@@ -12,16 +12,10 @@ import { classNames } from "../utils/styles.util";
 
 
 const navigationList = [
-  { name: "Home", href: "/dashboard", icon: HomeIcon },
   {
-    name: "Users",
-    href: "/dashboard/users",
-    icon: UsersIcon,
-  },
-  {
-    name: "Products",
-    href: "/dashboard/products",
-    icon: ShoppingBagIcon,
+    name: "Counter",
+    href: "/dashboard/counter",
+    icon: CalculatorIcon,
   },
   {
     name: "Transactions",
@@ -29,11 +23,19 @@ const navigationList = [
     icon: CurrencyDollarIcon,
   },
   {
-    name: "Counter",
-    href: "/dashboard/counter",
-    icon: CalculatorIcon,
+    name: "Products",
+    href: "/dashboard/products",
+    icon: ShoppingBagIcon,
   },
+  {
+    name: "Users",
+    href: "/dashboard/users",
+    icon: UsersIcon,
+  },
+  { name: "Home", href: "/dashboard", icon: HomeIcon },
 ];
+
+const reverseNavigationList = [...navigationList].reverse();
 
 function DashboardPage() {
   const { logout, user } = useAuth();
@@ -72,7 +74,7 @@ function DashboardPage() {
 
           <nav className=" flex-1 flex flex-col overflow-y-auto">
             <div className="flex-1 px-2 py-4 space-y-1">
-              {navigationList.map((item) => {
+              {reverseNavigationList.map((item) => {
                 const IconComponent = item.icon;
                 return <NavLink key={item.name} to={item.href} end className={({ isActive }) => {
                   const dynamicClassName = isActive ? "bg-primary-dark text-text-white" : "text-text-gray hover:bg-primary-light hover:text-text-white";
@@ -100,10 +102,10 @@ function DashboardPage() {
       <main className="flex-1 relative z-0 overflow-y-auto py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
           <h1 className="text-2xl font-semibold text-gray-900">
-            {navigationList.find((item) => {
+            {location.pathname === "/dashboard"? "Home" : reverseNavigationList.find((item) => {
               console.log(item.href);
               
-              return item.href === location.pathname
+              return location.pathname.includes(item.href);
             })?.name || "Not found!"}
           </h1>
         </div>
