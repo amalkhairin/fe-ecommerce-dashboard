@@ -1,3 +1,4 @@
+import { lazy } from "react";
 import {
   createBrowserRouter,
   Navigate,
@@ -5,13 +6,23 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
-import ProtectedRoute from "./components/ProtectedRoute";
-import DashboardPage from "./pages/DashboardPage";
-import LoginPage from "./pages/LoginPage";
-import CounterPage from "./pages/CounterPage";
-import ProductsPage from "./pages/ProductPage";
-import ProductDetailsPageContainer from "./pages/productDetailsPage/ProductDetailPageContainer";
-import ErrorFallbackPage from "./pages/ErrorFallbackPage";
+// import ProtectedRoute from "./components/ProtectedRoute";
+// import DashboardPage from "./pages/DashboardPage";
+// import LoginPage from "./pages/LoginPage";
+// import CounterPage from "./pages/CounterPage";
+// import ProductsPage from "./pages/ProductPage";
+// import ProductDetailsPageContainer from "./pages/productDetailsPage/ProductDetailPageContainer";
+// import ErrorFallbackPage from "./pages/ErrorFallbackPage";
+
+const LoginPage = lazy(() => import("./pages/LoginPage"));
+const ProtectedRoute = lazy(() => import("./components/ProtectedRoute"));
+const DashboardPage = lazy(() => import("./pages/DashboardPage"));
+const CounterPage = lazy(() => import("./pages/CounterPage"));
+const ProductsPage = lazy(() => import("./pages/ProductPage"));
+const ProductDetailsPageContainer = lazy(() =>
+  import("./pages/productDetailsPage/ProductDetailPageContainer")
+);
+const ErrorFallbackPage = lazy(() => import("./pages/ErrorFallbackPage"));
 
 const HomePage = () => <h1>Home Page</h1>;
 const UsersPage = () => <h1>Users Page</h1>;
