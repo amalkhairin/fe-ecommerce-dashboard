@@ -10,8 +10,8 @@ const AuthContextProvider = AuthContext.Provider; // Component
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const decodeAndSetUser = (accessTokenParam) => {
-    const jwtPayload = jwtDecode(accessTokenParam);
+  const decodeAndSetUser = (access_tokenParam) => {
+    const jwtPayload = jwtDecode(access_tokenParam);
 
     const newUser = {
       id: jwtPayload.sub,
@@ -27,9 +27,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   const loadUser = () => {
-    const accessToken = localStorage.getItem("accessToken");
-    if (accessToken) {
-      decodeAndSetUser(accessToken);
+    const access_token = localStorage.getItem("access_token");
+    if (access_token) {
+      decodeAndSetUser(access_token);
     } else {
       setIsLoading(false);
     }
@@ -42,17 +42,17 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (username, password) => {
     setIsLoading(true);
-    const { accessToken, refreshToken } = await AuthApi.login(
+    const { access_token, refreshToken } = await AuthApi.login(
       username,
       password
     );
-    localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem("access_token", access_token);
     localStorage.setItem("refreshToken", refreshToken);
-    decodeAndSetUser(accessToken);
+    decodeAndSetUser(access_token);
   };
 
   const logout = () => {
-    localStorage.removeItem("accessToken");
+    localStorage.removeItem("access_token");
     localStorage.removeItem("refreshToken");
     setUser(null);
   };

@@ -82,6 +82,7 @@ function ProductDetailsPage() {
       }else{
         await ProductApi.createProduct(formData);
       }
+      navigate(-1)
     } catch (e) {
       console.log("error when create/update product", e.message);
       
