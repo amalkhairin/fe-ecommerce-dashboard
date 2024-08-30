@@ -1,4 +1,5 @@
 import axios from "axios";
+import AuthApi from "./AuthApi";
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api/v2",
@@ -22,6 +23,30 @@ axiosInstance.interceptors.request.use(
   },
   (error) => {
     console.error("axiosInstance.interceptors.request Error:", error.message);
+    return Promise.reject(error);
+  }
+);
+
+axiosInstance.interceptors.response.use(
+   (response) => {
+    return response;
+  },
+  async (error) => {
+    const originalRequest = error.config;
+    if ( error?.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      try {
+        const refreshResponse = await AuthApi.refresh();
+        axios.defaults.headers.common["Authorization"] = `Bearer ${refreshResponse.access_token}`;
+        return axiosInstance(originalRequest);
+      } catch (refreshError) {
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        window.location.href = "/login";
+        return Promise.reject(refreshError);
+      }
+    }
+    console.error("axiosInstance.interceptors.response Error:", error.message);
     return Promise.reject(error);
   }
 );
