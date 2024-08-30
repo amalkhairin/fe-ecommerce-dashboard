@@ -1,11 +1,12 @@
+import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
+import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Pagination, useDisclosure } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import ProductApi from "../api/ProductsApi";
-import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
-import { Pagination } from "@nextui-org/react";
-import { CloseFilledIcon, SearchIcon } from "../assets/icons";
-import { useDebounce } from "use-debounce";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import { useDebounce } from "use-debounce";
+import ProductApi from "../api/ProductsApi";
+import { CloseFilledIcon, SearchIcon } from "../assets/icons";
 
 const columns = [
   { id: "no", label: "No.", className: "py-3.5 pl-4 pr-3 sm:pl-6" },
@@ -29,6 +30,7 @@ function formatPrice(price) {
 
 function ProductsPage() {
   const navigate = useNavigate();
+  const {isOpen, onOpen, onOpenChange, onClose} = useDisclosure();
 
   const { items, total, error } = useSelector((state) => state.products);
   const [page, setPage] = useState(1);
@@ -36,6 +38,7 @@ function ProductsPage() {
   const [value] = useDebounce(searchQuery, 700);
   const limit = 10;
   const totalPages = Math.ceil(total / limit);
+  const [productTobeDeleted, setProductTobeDeleted] = useState(null);
 
   useEffect(() => {
     (async function () {
@@ -66,7 +69,22 @@ function ProductsPage() {
     });
   };
 
-  console.log(items);
+  const deleteProductHandler = (product) => {
+    setProductTobeDeleted(product);
+    onOpenChange(true);
+  };
+  
+  const deleteHandler = async () => {
+    await ProductApi.deleteProduct(
+      productTobeDeleted.id,
+      page,
+      limit,
+      searchQuery
+    );
+    toast.success("Product deleted successfully");
+    onClose();
+  }
+
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
@@ -155,7 +173,7 @@ function ProductsPage() {
 
                       <button
                         className="text-red-600 hover:text-red-900 transition duration-150 ease-in-out"
-                        onClick={() => alert("delete button clicked")}
+                        onClick={() => deleteProductHandler(item)}
                       >
                         <TrashIcon className="h-5 w-5" />
                       </button>
@@ -189,6 +207,33 @@ function ProductsPage() {
             size="md"
           />
         </div>
+
+        <Modal
+          isOpen={isOpen}
+          onOpenChange={onOpenChange}
+          backdrop="opaque"
+          closeButton
+          blur
+          aria-labelledby="modal-title"
+          aria-describedby="modal-description"
+        >
+          <ModalContent>
+              {(onClose) => {
+                return <>
+                  <ModalHeader className="flex flex-col gap-1">Confirm Delete</ModalHeader>
+                  <ModalBody>
+                    <p>Are you sure you want to delete this product? <span className="text-bold text-red-500">{
+                      `"${productTobeDeleted.name}"`}</span>
+                    </p>
+                  </ModalBody>
+                  <ModalFooter>
+                    <Button color="default" variant="light" onPress={onClose}>Cancel</Button>
+                    <Button color="danger" onPress={deleteHandler}>Yes</Button>
+                  </ModalFooter>
+                </>
+              }}
+          </ModalContent>
+        </Modal>
       </div>
     </div>
   );

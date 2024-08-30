@@ -9,6 +9,7 @@ import {
 import axiosInstance from "./axiosInstance";
 import { setCategories } from "../redux/products/ProductCategoriesSlice";
 import dayjs from "dayjs";
+import { toast } from "sonner";
 
 class ProductApi {
   static async getProducts(page = 1, limit = 10, query) {
@@ -52,7 +53,6 @@ class ProductApi {
       }
       const res = await axiosInstance.get("/categories");
       const { data } = res;
-      console.log(data);
       store.dispatch(setCategories(data));
     } catch (error) {
       store.dispatch(setError(error));
@@ -82,9 +82,11 @@ class ProductApi {
         headers: { "Content-Type": "multipart/form-data" },
       });
       store.dispatch(addProduct(res.data));
+      toast.success("Product created successfully");
     } catch (error) {
       console.error(error.message);
       store.dispatch(setError(error.message));
+      toast.error("Failed to create product");
     } finally {
       store.dispatch(setIsLoading(false));
     }
@@ -97,9 +99,27 @@ class ProductApi {
         headers: { "Content-Type": "multipart/form-data" },
       });
       store.dispatch(editProduct(res.data));
+      toast.success("Product updated successfully");
     } catch (error) {
       console.error(error.message);
       store.dispatch(setError(error.message));
+      toast.error("Failed to update product");
+    } finally {
+      store.dispatch(setIsLoading(false));
+    }
+  }
+
+  static async deleteProduct(id, page = 1, limit = 10, query) {
+    store.dispatch(setIsLoading(true));
+    try {
+      await axiosInstance.delete(`/products/${id}`);
+      // store.dispatch(deleteProduct(id));
+      toast.success("Product deleted successfully");
+      await this.getProducts(page, limit, query);
+    } catch (error) {
+      console.error(error.message);
+      store.dispatch(setError(error.message));
+      toast.error("Failed to delete product");
     } finally {
       store.dispatch(setIsLoading(false));
     }

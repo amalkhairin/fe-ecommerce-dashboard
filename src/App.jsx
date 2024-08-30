@@ -10,7 +10,8 @@ import DashboardPage from "./pages/DashboardPage";
 import LoginPage from "./pages/LoginPage";
 import CounterPage from "./pages/CounterPage";
 import ProductsPage from "./pages/ProductPage";
-import ProductDetailPage from "./pages/ProductDetailPage";
+import ProductDetailsPageContainer from "./pages/productDetailsPage/ProductDetailPageContainer";
+import ErrorFallbackPage from "./pages/ErrorFallbackPage";
 
 const HomePage = () => <h1>Home Page</h1>;
 const UsersPage = () => <h1>Users Page</h1>;
@@ -24,6 +25,7 @@ const router = createBrowserRouter([
         <Outlet />
       </ProtectedRoute>
     ),
+    errorElement: <ErrorFallbackPage />,
     children: [
       {
         index: true,
@@ -47,11 +49,11 @@ const router = createBrowserRouter([
           },
           {
             path: "products/new",
-            element: <ProductDetailPage />,
+            element: <ProductDetailsPageContainer />,
           },
           {
             path: "products/:id",
-            element: <ProductDetailPage />,
+            element: <ProductDetailsPageContainer />,
           },
           {
             path: "transactions",

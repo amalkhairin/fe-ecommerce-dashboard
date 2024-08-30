@@ -1,9 +1,9 @@
 import { Select, SelectItem } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
-import ProductFormLabel from "../components/ProductFormLabel";
-import { useLocation, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import ProductApi from "../api/ProductsApi";
+import ProductFormLabel from "../components/ProductFormLabel";
 
 import { IMAGE_PLACEHOLDER_URL } from "../constants/images.constant";
 
@@ -19,6 +19,7 @@ function ProductDetailsPage() {
     image: null,
     imageUrl: IMAGE_PLACEHOLDER_URL,
   });
+  const navigate = useNavigate();
 
   const categories = useSelector((state) => {
     return state.productCategories.items;
@@ -75,6 +76,48 @@ function ProductDetailsPage() {
     });
   }
 
+  function handleInput(e) {
+    setProduct((prevState) => {
+      return {
+        ...prevState,
+        [e.target.name]: e.target.value,
+      };
+    });
+  }
+
+  function handleCategoryChange(e) {
+    setProduct((prevState) => {
+      return {
+        ...prevState,
+        categoryIds: [...e],
+      };
+    });
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const formData = new FormData();
+      formData.append("name", product.name);
+      formData.append("description", product.description);
+      formData.append("price", product.price);
+      formData.append("stock", product.stock);
+      formData.append("categoryIds", product.categoryIds.join(","));
+
+      if (product.image) {
+        formData.append("image", product.image);
+      }
+
+      if (productId) {
+        await ProductApi.updateProduct(productId, formData);
+      } else {
+        await ProductApi.createProduct(formData);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     ProductApi.getCategories();
     if (productId) {
@@ -86,7 +129,7 @@ function ProductDetailsPage() {
 
       //   console.log(product.categories);
 
-        getProductDetail(productId);
+      //   getProductDetail(productId);
     }
   }, [productId]);
 
@@ -99,7 +142,7 @@ function ProductDetailsPage() {
         {isEditForm ? "Update Product Form" : "Create Product Form"}
       </h1>
 
-      <form className="space-y-6 ">
+      <form className="space-y-6" onSubmit={handleSubmit}>
         <div className="grid grid-cols-2 gap-6">
           {/* Kolom ke-satu */}
           <div className="space-y-6">
@@ -113,6 +156,7 @@ function ProductDetailsPage() {
                 placeholder="Enter product name"
                 required
                 value={product.name}
+                onChange={handleInput}
               />
             </div>
 
@@ -126,6 +170,7 @@ function ProductDetailsPage() {
                 placeholder="Enter product description"
                 required
                 value={product.description}
+                onChange={handleInput}
               />
             </div>
 
@@ -134,11 +179,12 @@ function ProductDetailsPage() {
               <input
                 type="number"
                 id="price"
-                name="pice"
+                name="price"
                 className="w-full px-3 py-2 border-gray-300 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter product price"
                 required
                 value={product.price}
+                onChange={handleInput}
               />
             </div>
 
@@ -152,6 +198,7 @@ function ProductDetailsPage() {
                 placeholder="Enter product stock"
                 required
                 value={product.stock}
+                onChange={handleInput}
               />
             </div>
 
@@ -165,6 +212,7 @@ function ProductDetailsPage() {
                 placeholder="Select categories"
                 className="w-full"
                 selectedKeys={product.categoryIds}
+                onSelectionChange={handleCategoryChange}
               >
                 {categories.map((category) => (
                   <SelectItem key={category.id}>{category.name}</SelectItem>
@@ -222,6 +270,7 @@ function ProductDetailsPage() {
             </div>
             <div className="flex justify-end space-x-4">
               <button
+                onClick={() => navigate(-1)}
                 type="button"
                 className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none 
             focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"

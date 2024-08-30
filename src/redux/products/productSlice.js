@@ -26,6 +26,10 @@ export const productsSlice = createSlice({
         return item;
       });
     },
+    // deleteProduct(state, action) {
+    //   const productId = action.payload;
+    //   state.items = state.items.filter((item) => item.id !== productId);
+    // },
     setIsLoading(state, action) {
       state.isLoading = action.payload;
     },
