@@ -8,13 +8,13 @@ import {
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import DashboardPage from "./pages/DashboardPage";
-// import LoginPage from "./pages/LoginPage";
+import LoginPage from "./pages/LoginPage";
 import CounterPage from "./pages/CounterPage";
 import ProductsPage from "./pages/ProductPage";
 import ProductDetailsPageContainer from "./pages/productDetailsPage/ProductDetailPageContainer";
 import ErrorFallbackPage from "./pages/ErrorFallbackPage";
 
-const LoginPage = lazy(() => import("./pages/LoginPage"));
+// const LoginPage = lazy(() => import("./pages/LoginPage"));
 // const ProtectedRoute = lazy(() => import("./components/ProtectedRoute"));
 // const DashboardPage = lazy(() => import("./pages/DashboardPage"));
 // const CounterPage = lazy(() => import("./pages/CounterPage"));

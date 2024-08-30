@@ -21,7 +21,7 @@ class AuthApi {
 
       const response = await axiosInstance.post("auth/refresh", null, {
         headers: {
-          refresh_token
+          "refresh-token": refresh_token
         }
       });
 
